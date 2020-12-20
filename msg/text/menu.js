@@ -52,6 +52,7 @@ selalu cek limit kamu!!
 ◉ *#google* [query]
 ◉ *#wiki* [query]
 ◉ *#shopee* [query]
+◉ *#ttp* [Text kalimat]
 
 🕌 *ɪꜱʟᴀᴍɪᴄ* 🕌
 ◉ *#listsurah*
