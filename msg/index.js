@@ -17,6 +17,7 @@ moment.tz.setDefault('Asia/Jakarta').locale('id')
 const scdl = require('soundcloud-downloader').default
 const CLIENT_ID = 'Cari sendiri di soundcloud.com! kalo bingung kontak saya via wa :D'
 const brainly = require('brainly-scraper');
+const { getStickerMaker } = require('../lib/ttp')
 const botset = JSON.parse(fs.readFileSync('./lib/helper/bot.json'))
 let ban = JSON.parse(fs.readFileSync('./lib/database/banned.json'))
 let prem = JSON.parse(fs.readFileSync('./lib/database/premium.json'))
@@ -722,6 +723,50 @@ Total Pengguna yang telah terdaftar ${pengirim.length}`)
                         client.reply(from, 'Global chat has been enabled!', id)
                     }
                     break
+                case 'ttp':
+                if(isReg(obj)) return
+                if(cekumur(cekage)) return
+                if (!isGroupMsg) return client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
+                try
+                {
+                    const string = body.toLowerCase().includes('#ttp') ? body.slice(5) : body.slice(5)
+                    if(args)
+                    {
+                        if(quotedMsgObj == null)
+                        {
+                            const gasMake = await getStickerMaker(string)
+                            if(gasMake.status == true)
+                            {
+                                try{
+                                    await client.sendImageAsSticker(from, gasMake.base64)
+                                }catch(err) {
+                                    await client.reply(from, 'Gagal membuat.', id)
+                                } 
+                            }else{
+                                await client.reply(from, gasMake.reason, id)
+                            }
+                        }else if(quotedMsgObj != null){
+                            const gasMake = await getStickerMaker(quotedMsgObj.body)
+                            if(gasMake.status == true)
+                            {
+                                try{
+                                    await client.sendImageAsSticker(from, gasMake.base64)
+                                }catch(err) {
+                                    await client.reply(from, 'Gagal membuat.', id)
+                                } 
+                            }else{
+                                await client.reply(from, gasMake.reason, id)
+                            }
+                        }
+                       
+                    }else{
+                        await client.reply(from, 'Tidak boleh kosong.', id)
+                    }
+                }catch(error)
+                {
+                    console.log(error)
+                }
+            break
                 case 'filter':
                     if(isLimit(serial)) return
                     if(isReg(obj)) return
